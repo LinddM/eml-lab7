@@ -28,11 +28,13 @@ def adam(
     tv = np.zeros(To.shape)
 
     X, T, t = Xo.astype(float), To, 0.0
+    cost = []
 
     while t < max_iter:
         t += 1.0
 
         xg, tg = jac(Y, X, T)
+        cost.append(fun(Y, X, T))
 
         # print(f'{t} \t loss={fun(Y, X, T).item():,.2f}')
 
@@ -51,4 +53,4 @@ def adam(
         X -= alpha * xmh / (np.sqrt(xvh) + epsilon)
         T -= alpha * tmh / (np.sqrt(tvh) + epsilon)
 
-    return X, T
+    return X, T, cost
