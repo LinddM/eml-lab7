@@ -9,7 +9,7 @@ def gradient(Y, X, T):
     hip_error = (X @ T.T - Y) * R
 
     return (
-        hip_error @ T.T,
+        hip_error @ T,
         hip_error.T @ X,
     )
 
@@ -21,23 +21,20 @@ def adam(
     max_iter=1000
 ):
 
-    Xo.astype('float64')
-    Y.astype('float64')
-
     xm = np.zeros(Xo.shape)
     tm = np.zeros(To.shape)
 
     xv = np.zeros(Xo.shape)
     tv = np.zeros(To.shape)
 
-    X, T, t = Xo, To, 0.0
+    X, T, t = Xo.astype(float), To, 0.0
 
     while t < max_iter:
         t += 1.0
 
         xg, tg = jac(Y, X, T)
 
-        print(f'{t} \t loss={fun(Y, X, T).item():,.2f}')
+        # print(f'{t} \t loss={fun(Y, X, T).item():,.2f}')
 
         xm = beta1 * xm + (1.0 - beta1) * xg
         tm = beta1 * tm + (1.0 - beta1) * tg
